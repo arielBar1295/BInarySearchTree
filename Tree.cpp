@@ -42,12 +42,9 @@ if(r==NULL){
 
 void ariel::Tree::insert(int x){
     
-      try{
+      
     rootP=helpinsert(x,this->rootP);
-    }
-    catch(const char* msg){
-        cerr<<x<<msg<<endl;
-    }
+  
 }  
    
 
@@ -114,12 +111,10 @@ ariel::Tree::node* ariel::Tree::helpRemove(int key,ariel::Tree::node* r){
 
   
 void ariel::Tree::remove(int key){
-  try{
+  
   rootP=helpRemove(key,this->rootP);
-  }
-   catch(const char* msg){
-        cerr<<key<<msg<<endl;
-    }
+
+   
 
 }
 
