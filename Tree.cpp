@@ -31,7 +31,7 @@ if(r==NULL){
           r->right= helpinsert(key,r->right); 
         else
           {
-              throw " already exists";
+              throw "already exists";
           }
         }  
          
@@ -60,8 +60,9 @@ int ariel::Tree::containsHelp(int i,ariel::Tree::node* r){
     if(i>r->key)
       return containsHelp(i,r->right);
       else
-      return containsHelp(i,r->right);
+      return containsHelp(i,r->left);
   }
+  
   
   
 }
@@ -74,22 +75,18 @@ ariel::Tree::node* ariel::Tree::findMin(ariel::Tree::node* r){
 }
 ariel::Tree::node* ariel::Tree::helpRemove(int key,ariel::Tree::node* r){
  if((containsHelp(key,r))==0){
-   throw " is not in the tree!";
+   throw "is not in the tree!";
    
  }
  ariel::Tree::node* temp;
-  if(r==NULL){
-    return rootP;
-  }
-  else if(key<r->key){
-    r->left=helpRemove( key,r->left);
-  }
-  
-  
-   else if(key>r->key)
-    r->right=helpRemove( key,r->right);
-  
-     else if(r->left && r->right)
+    
+        if(r == NULL)
+            return NULL;
+        else if(key < r->key)
+            r->left = helpRemove(key, r->left);
+        else if(key > r->key)
+            r->right = helpRemove(key, r->right);
+        else if(r->left && r->right)
         {
             temp = findMin(r->right);
             r->key = temp->key;
@@ -99,13 +96,13 @@ ariel::Tree::node* ariel::Tree::helpRemove(int key,ariel::Tree::node* r){
         {
             temp = r;
             if(r->left == NULL)
-                r = r->right;
+                r=r->right;
             else if(r->right == NULL)
-                r= r->left;
+                r = r->left;
             delete temp;
         }
 
-        return r;
+return r;
 }
   
 
@@ -197,4 +194,15 @@ if(r == NULL)
 }
 void ariel::Tree::print(){
   printHelp(this->rootP);
+}
+void ariel::Tree::destroy(ariel::Tree::node* r)
+{
+  if(r!=NULL){
+    destroy(r->left);
+    destroy(r->right);
+    delete r;
+  }
+}
+ariel::Tree::~Tree(){
+  destroy(this->rootP);
 }
