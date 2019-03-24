@@ -27,10 +27,12 @@ int containsHelp(int i,node* r);
 int leftHelp(int i,node* r);
 int rightHelp(int i,node* r);
 void printHelp(node* r);
+void destroy(node* r);
 public:
 Tree(){
     rootP=NULL; 
 }
+~Tree();
 int parent(int i);
 int left(int i);
 int right(int i);
