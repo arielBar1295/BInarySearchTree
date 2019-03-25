@@ -77,32 +77,37 @@ ariel::Tree::node* ariel::Tree::helpRemove(int key,ariel::Tree::node* r){
  if((containsHelp(key,r))==0){
    throw "is not in the tree!";
    
- }
- ariel::Tree::node* temp;
-    
-        if(r == NULL)
-            return NULL;
-        else if(key < r->key)
-            r->left = helpRemove(key, r->left);
-        else if(key > r->key)
-            r->right = helpRemove(key, r->right);
-        else if(r->left && r->right)
-        {
-            temp = findMin(r->right);
-            r->key = temp->key;
-            r->right = helpRemove(r->key, r->right);
-        }
-        else
-        {
-            temp = r;
-            if(r->left == NULL)
-                r=r->right;
-            else if(r->right == NULL)
-                r = r->left;
-            delete temp;
-        }
-
-return r;
+ } 
+    if (r == NULL) return r; 
+  
+    if (key < r->key) 
+        r->left = helpRemove(key,r->left); 
+  
+    else if (key > r->key) 
+        r->right = helpRemove(key,r->right); 
+  
+    else
+    { 
+          if (r->left == NULL) 
+        { 
+            ariel::Tree::node* temp = r->right; 
+            delete r; 
+            return temp; 
+        } 
+        else if (r->right == NULL) 
+        { 
+            ariel::Tree::node* temp = r->left; 
+            delete r; 
+            return temp; 
+        } 
+  
+         ariel::Tree::node* temp = findMin(r->right); 
+  
+        r->key = temp->key; 
+  
+        r->right = helpRemove(temp->key,r->right); 
+    } 
+    return r; 
 }
   
 
@@ -119,22 +124,48 @@ int ariel::Tree::contains(int i){
   return containsHelp(i,this->rootP);
 }
 int ariel::Tree::helpParent(int key,ariel::Tree::node* r){
- 
- if(r==NULL)
-   return 0;
-  if(r->key==key)
-     return 0;
-    else
-    { 
-      while(r->right->key!=key!=NULL && r->left->key!=key!=NULL &&r!=NULL){
-            if(r->key<key)
-             r=r->right;
-             else
-             r=r->left;
-      }
+  if((containsHelp(key,r))==0){
+   throw "is not in the tree!";
+   
+ }
+ int ri=0;
+ int l=0;
+ if(r==NULL || r->key==key)
+    throw "no parent";
+    if(r->left!=NULL){
+        l=1;
+      if(r->left->key==key)
+         return r->key;
     }
-   return r->key; 
+     if(r->right!=NULL){
+       ri=1;
+      if(r->right->key==key)
+         return r->key;
+    }
+     if(ri==1){
+      if(key>r->key)
+         return helpParent(key,r->right);
+    }
+    if(l==1){
+      if(key<r->key)
+         return helpParent(key,r->left);
+    }
+              
+        return NULL;
+       
 }
+      // }
+    //   while(r->right->key!=key!=NULL && r->left->key!=key!=NULL &&r!=NULL){
+    //         if(r->key<key)
+    //          r=r->right;
+    //          else
+    //          r=r->left;
+    //   }
+    // }
+//     }
+//    return NULL; 
+
+// }
 
 int ariel::Tree::parent(int i){
   
@@ -143,23 +174,24 @@ int ariel::Tree::parent(int i){
   
 }
 int ariel::Tree::root(){
+  if(rootP==NULL)
+  throw "no tree!";
+  else 
   return this->rootP->key;
 }
 int ariel::Tree::leftHelp(int i,ariel::Tree::node* r){
   if(r==NULL)
-    return NULL;
+    throw "no tree";
     while(r->key!=i){
       if(i>r->key)
-      r=r->right;
+          r=r->right;
       else
-        r=r->left;
+           r=r->left;
     }
     if(r->left==NULL)
-      return NULL;
-      else
-      {
-        return r->left->key;
-      }
+      throw "not exsits";
+    return r->left->key;
+      
       
 }
 int ariel::Tree::left(int i){
@@ -167,7 +199,7 @@ int ariel::Tree::left(int i){
 }
 int ariel::Tree::rightHelp(int i,ariel::Tree::node* r){
   if(r==NULL)
-    return NULL;
+    throw "no tree";
     while(r->key!=i){
       if(i>r->key)
       r=r->right;
@@ -175,7 +207,7 @@ int ariel::Tree::rightHelp(int i,ariel::Tree::node* r){
         r=r->left;
     }
     if(r->right==NULL)
-      return NULL;
+     throw "exception!";
       else
       {
         return r->right->key;
